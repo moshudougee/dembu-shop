@@ -3,6 +3,7 @@ import { getProductProperties } from '@/lib/services/propDescServices'
 import React from 'react'
 import Product from './Product'
 import AdminLayout from '@/components/admin/AdminLayout'
+import Link from 'next/link'
 
 
 export const generateMetadata = async  ({
@@ -35,7 +36,11 @@ const ProductViewPage = async ({
 
   return (
     <AdminLayout activeItem='products'>
-        
+        <div className='m-10'>
+          <Link href={`/admin/products`}>
+            Go back to products
+          </Link>
+        </div>
         {/* Product details */}
         <Product 
             product={product}

@@ -1,7 +1,10 @@
+import AdminProdItem from '@/components/admin/AdminProdItem'
 import ProductItem from '@/components/products/ProductItem'
 import { Rating } from '@/components/products/Rating'
+import { auth } from '@/lib/auth'
 import productServices from '@/lib/services/productService'
 import Link from 'next/link'
+
 
 const sortOrders = ['newest', 'lowest', 'highest', 'rating']
 const prices = [
@@ -71,6 +74,8 @@ export default async function SearchPage({
     page: string
   }
 }) {
+  const session = await auth()
+  //console.log(session)
   const getFilterUrl = ({
     c,
     s,
@@ -222,9 +227,16 @@ export default async function SearchPage({
 
         <div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3  ">
-            {products.map((product) => (
-              <ProductItem key={product.slug} product={product} />
-            ))}
+            {session?.user.isAdmin ? (
+              products.map((product) => (
+                <AdminProdItem key={product.id} product={product} />
+              ))
+            ) : (
+              products.map((product) => (
+                <ProductItem key={product.slug} product={product} />
+              ))
+            ) }
+            
           </div>
           <div className="join">
             {products.length > 0 &&

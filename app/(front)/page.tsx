@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import ProductItem from "@/components/products/ProductItem";
 import { getCategories } from "@/lib/services/propDescServices";
+import { auth } from "@/lib/auth";
+import AdminProdItem from "@/components/admin/AdminProdItem";
 
 
 export const metadata: Metadata = {
@@ -14,6 +16,7 @@ export const metadata: Metadata = {
     'Your one stop shop for everything the market has to offer',
 }
 export default async function Home() {
+  const session = await auth()
   const featuredProducts: Product[] = await productService.getFeatured()
   const latestProducts: Product[] = await productService.getLatest()
   
@@ -38,9 +41,16 @@ export default async function Home() {
             id={`slide-${index}`}
             className="carousel-item relative w-full"
           >
-            <Link href={`/product/${product.slug}`}>
-              <Image src={banner} width={1500} height={400} className="object-cover w-full" alt={product.name} priority />
-            </Link>
+            {session?.user.isAdmin ? (
+              <Link href={`/admin/products/details/${product.id}`}>
+                <Image src={banner} width={1500} height={400} className="object-cover w-full" alt={product.name} priority />
+              </Link>
+            ) : (
+              <Link href={`/product/${product.slug}`}>
+                <Image src={banner} width={1500} height={400} className="object-cover w-full" alt={product.name} priority />
+              </Link>
+            )}
+            
 
             <div
               className="absolute flex justify-between transform 
@@ -68,9 +78,16 @@ export default async function Home() {
       </div>
       <h2 className="text-2xl py-2">Latest Products</h2>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-        {latestProducts.map((product) => (
-          <ProductItem key={product.slug} product={product} />
-        ))}
+        {session?.user.isAdmin ? (
+          latestProducts.map((product) => (
+            <AdminProdItem key={product.id} product={product} />
+          ))
+        ) : (
+          latestProducts.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))
+        )
+        }
       </div>
     </>
   );

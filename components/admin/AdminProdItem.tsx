@@ -20,6 +20,7 @@ const AdminProdItem = ({ product }: { product: Product }) => {
             width={280}
             height={280}
             className="object-cover h-64 w-full rounded-md mt-4 mx-2"
+            priority
           />
         </Link>
       </figure>
