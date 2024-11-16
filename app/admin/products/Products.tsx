@@ -1,6 +1,6 @@
 'use client'
 import { Switch } from '@/components/ui/switch'
-import { CopyPlus } from 'lucide-react'
+import { ArrowLeftToLine, ArrowRightToLine, CopyPlus } from 'lucide-react'
 //import { Product } from '@/lib/models/ProductModel'
 //import { formatId } from '@/lib/utils'
 import Link from 'next/link'
@@ -13,6 +13,8 @@ import useSWRMutation from 'swr/mutation'
 export default function Products() {
   const { data: products, error } = useSWR(`/api/admin/products`)
   const [enable, setEnable] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 10
 
   const router = useRouter()
 
@@ -57,6 +59,12 @@ export default function Products() {
   if (error) return 'An error has occurred.'
   if (!products) return 'Loading...'
 
+   // Calculate the range of products to display
+   const startIndex = (currentPage - 1) * pageSize
+   const endIndex = startIndex + pageSize
+   const paginatedProducts = products.slice(startIndex, endIndex)
+   const totalPages = Math.ceil(products.length / pageSize)
+
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -96,7 +104,7 @@ export default function Products() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product: Product) => { 
+            {paginatedProducts.map((product: Product) => { 
               let formatedName = ''
               if (product.name.length > 50) {
                 formatedName = product.name.substring(0, 50) + '...'
@@ -138,6 +146,28 @@ export default function Products() {
           </tbody>
         </table>
       </div>
+      {/* Pagination Controls */}
+      {totalPages > 1 && 
+        <div className="flex justify-center items-center space-x-4 mt-4">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="btn btn-success w-32"
+          >
+            <ArrowLeftToLine />
+            <span>Previous</span>
+          </button>
+          <span>Page {currentPage} of {totalPages}</span>
+          <button
+            onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            className="btn btn-success w-32"
+          >
+            <span>Next</span>
+            <ArrowRightToLine />
+          </button>
+        </div>
+      }
     </div>
   )
 }

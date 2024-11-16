@@ -1,6 +1,6 @@
 'use client'
 import { Switch } from '@/components/ui/switch'
-import { CopyPlus } from 'lucide-react'
+import { ArrowLeftToLine, ArrowRightToLine, CopyPlus } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -11,6 +11,9 @@ import useSWRMutation from 'swr/mutation'
 const Categories = () => {
     const { data: categories, error } = useSWR(`/api/admin/categories`)
     const [enable, setEnable] = useState(false)
+    const [currentPage, setCurrentPage] = useState(1)
+    const pageSize = 10
+
     const router = useRouter()
 
     const { trigger: deleteCategory } = useSWRMutation(
@@ -54,6 +57,13 @@ const Categories = () => {
 
     if (error) return 'An error has occurred.'
     if (!categories) return 'Loading...'
+
+    // Calculate the range of products to display
+    const startIndex = (currentPage - 1) * pageSize
+    const endIndex = startIndex + pageSize
+    const paginatedCategories = categories.slice(startIndex, endIndex)
+    const totalPages = Math.ceil(categories.length / pageSize)
+
     return (
         <div>
             <div className='flex justify-between items-center'>
@@ -88,7 +98,7 @@ const Categories = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {categories.map((category: Category) => (
+                        {paginatedCategories.map((category: Category) => (
                             <tr key={category.id}>
                                 <td>{category.id}</td>
                                 <td>{category.name}</td>
@@ -114,6 +124,28 @@ const Categories = () => {
                     </tbody>
                 </table>
             </div>
+            {/* Pagination Controls */}
+            {totalPages > 1 && 
+                <div className="flex justify-center items-center space-x-4 mt-4">
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="btn btn-success w-32"
+                    >
+                        <ArrowLeftToLine />
+                        <span>Previous</span>
+                    </button>
+                    <span>Page {currentPage} of {totalPages}</span>
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className="btn btn-success w-32"
+                    >
+                        <span>Next</span>
+                        <ArrowRightToLine />
+                    </button>
+                </div>
+            }
         </div>
     )
 }

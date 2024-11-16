@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react'
 import useSWR from 'swr';
 import { getRelated} from '@/lib/services/propDescServices';
 import Link from 'next/link';
-import { Edit } from 'lucide-react';
+import { Edit, Telescope } from 'lucide-react';
 import AdminProdItem from '@/components/admin/AdminProdItem';
 
 interface ProductProps {
@@ -159,18 +159,27 @@ const Product: React.FC<ProductProps> = ({product, productProperties}) => {
                 </div>
                 <div className='flex flex-col gap-4 justify-center items-center bg-base-300 shadow-xl rounded-2xl py-4 px-8'>
                     <span>Product Ratings</span>
-                    <div className='flex w-full justify-center items-center'>
+                    <div className='flex flex-col gap-3 w-full justify-center items-center'>
                         <Rating
                             value={product.rating}
                             caption={`${product.numReviews} ratings`}
                         />
+                        <div className='flex'>
+                            <Link 
+                                href={`/admin/products/reviews/${product.id}`}
+                                className='btn btn-primary'
+                            >
+                                <Telescope />
+                                <span>View Ratings</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
                 <div>
                     <Link 
                         href={`/admin/products/${product.id}`}
                         type='button'
-                        className='btn btn-primary'
+                        className='btn btn-primary w-28'
                     >
                         <Edit />
                         <span>Edit</span>

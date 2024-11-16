@@ -184,3 +184,17 @@ export const checkFeaturedCategory = async (catName: string) => {
         return false
     }
 }
+
+export const getProductReviews = async (productId: number) => {
+    try {
+       const db = await readDB()
+       const reviews: Reviews = await db.reviews.find((item: Reviews) => item.productId === productId)
+       if (reviews) {
+        return reviews
+       }
+       return null 
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
