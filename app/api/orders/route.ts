@@ -53,7 +53,7 @@ export const POST = auth(async (req) => {
 
         const newOrder: Order = {
             id: db.orders.length + 1,
-            userId: user.id,
+            userId: user.id!,
             items: dbOrderItems,
             shippingAddress: payload.shippingAddress,
             paymentMethod: payload.paymentMethod,

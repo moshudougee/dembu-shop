@@ -16,7 +16,7 @@ export const GET = auth(async (req: any) => {
 
   // Simulate the .find().sort({ createdAt: -1 }) and .populate('user', 'name')
   const orders = db.orders
-    .sort((a: Order, b: Order) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) // Sort by createdAt descending
+    .sort((a: Order, b: Order) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime()) // Sort by createdAt descending
     .map((order: any) => {
       // Simulate populate('user', 'name')
       const user = db.users.find((user: User) => user.id === order.userId) // Assuming userId in orders points to users
