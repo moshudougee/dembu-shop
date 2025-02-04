@@ -2,25 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  border-radius: 4px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: rgba(161, 150, 134, 0.57);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #071606;
-  border-radius: 50px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #201313;
-}
-
 
 @layer base {
   :root {
@@ -76,6 +57,25 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(161, 150, 134, 0.57);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #071606;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #201313;
 }
 
 @layer base {

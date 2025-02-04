@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Lobster, Pinyon_Script } from "next/font/google";
@@ -44,12 +45,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${pinyon.variable} ${lobster.variable} antialiased`}
+        className={
+            `${geistSans.variable} ${geistMono.variable} ${pinyon.variable} ${lobster.variable} antialiased`
+        }
       >
         <Providers>
           <div className="drawer">
             <DrawerButton />
-            <div className="drawer-content">
+            <div className="drawer-content overflow-y-scroll custom-scrollbar">
               <div className="min-h-screen flex flex-col">
                 <Header />
                 <div className='flex mt-[60px] min-h-screen'>

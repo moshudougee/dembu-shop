@@ -2,8 +2,9 @@
 import { signIn, useSession } from 'next-auth/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 type Inputs = {
   email: string
@@ -12,6 +13,7 @@ type Inputs = {
 
 const Form = () => {
   const { data: session } = useSession()
+  const [showPass, setShowPass] = useState<boolean>(false)
 
   const params = useSearchParams()
   const callbackUrl = params.get('callbackUrl') || '/'
@@ -41,6 +43,9 @@ const Form = () => {
       password,
     })
   }
+
+  const handleTogglePass = () => setShowPass(!showPass)
+
   return (
     <div className="max-w-sm  mx-auto card bg-base-300 my-4">
       <div className="card-body">
@@ -80,14 +85,28 @@ const Form = () => {
             <label className="label" htmlFor="password">
               Password
             </label>
-            <input
-              type="password"
-              id="password"
-              {...register('password', {
-                required: 'Password is required',
-              })}
-              className="input input-bordered w-full max-w-sm"
-            />
+            <div className='flex'>
+              <input
+                type={showPass ? "text" : "password"}
+                id="password"
+                {...register('password', {
+                  required: 'Password is required',
+                })}
+                className="input input-bordered w-full max-w-sm"
+              />
+              <div className='absolute flex'>
+                <span 
+                  className='relative top-4 left-[280px]'
+                  onClick={handleTogglePass}
+                >
+                  {showPass ? 
+                      <FaEyeSlash size={24} />
+                      :
+                      <FaEye size={24} />
+                  }
+                </span>
+              </div>
+            </div>
             {errors.password?.message && (
               <div className="text-error">{errors.password.message}</div>
             )}
