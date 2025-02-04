@@ -1,5 +1,5 @@
 {
-  "name": "json-shop",
+  "name": "dembu-shop",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -18,7 +18,7 @@
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.0",
     "clsx": "^2.1.1",
-    "json-shop": "file:",
+    "dembu-shop": "file:",
     "lucide-react": "^0.441.0",
     "next": "^14.2.23",
     "next-auth": "^5.0.0-beta.4",
